@@ -1,14 +1,14 @@
-#####################################################
+################################################################################
 # LIBS
-#####################################################
+################################################################################
 
 import random
 import sys
 
 
-#####################################################
+################################################################################
 # CONSTANTS
-#####################################################
+################################################################################
 
 CARDS = [ # 7, 8, 9, 1(0), U(nter), O(ber), A(ss)
     "S7", "S8", "S9", "S1", "SU", "SO", "SK", "SA", # Schell
@@ -17,12 +17,14 @@ CARDS = [ # 7, 8, 9, 1(0), U(nter), O(ber), A(ss)
     "E7", "E8", "E9", "E1", "EU", "EO", "EK", "EA", # Eichel
 ]
 
+PLAYERS = ["Hans", "Lena", "Paul", "Anna"]
+
 NUM_CARDS_PER_PLAYER = 6
 
 
-#####################################################
+################################################################################
 # CLASSES
-#####################################################
+################################################################################
 
 class Pile:
 
@@ -35,7 +37,7 @@ class Pile:
     def draw(self):
         return self.cards.pop()
 
-    def get_upper_card(self):
+    def show_upper_card(self):
         return self.cards[-1]
 
     def shuffle(self):
@@ -44,7 +46,7 @@ class Pile:
     def get_size(self):
         return len(self.cards)
 
-#####################################################
+################################################################################
 
 class Card:
 
@@ -62,7 +64,7 @@ class Card:
         return self.color+self.value
 
 
-#####################################################
+################################################################################
 
 class Player:
 
@@ -89,20 +91,15 @@ class Player:
         return self.hand
 
 
-#####################################################
+################################################################################
 # PROGRAM
-#####################################################
+################################################################################
 
 # init players
-players = [
-    Player("Hans"),
-    Player("Paul"),
-    Player("Lena"),
-    Player("Anna")
-]
+players = []
 
-for player in players:
-    print(player.get_name())
+for player_name in PLAYERS:
+    players.append(Player(player_name))
 
 # init piles
 draw_pile = Pile()
@@ -140,7 +137,7 @@ while not game_is_over:
     current_player = players[turn_it % len(players)]
 
     # determine current card to play
-    current_card = drop_pile.get_upper_card()
+    current_card = drop_pile.show_upper_card()
 
     # player: check for each card if it matches the start card
     player_has_matching_card = False
