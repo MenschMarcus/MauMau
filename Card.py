@@ -12,3 +12,8 @@ class Card:
 
     def get_name(self):
         return self.color+self.value
+
+    def print_card(self, prefix="  "):
+        print("    |" + self.color + " " + self.value + "|")
+        print(str(prefix) + ")  " + "|   |")
+        print("    |" + self.value + " " + self.color + "|")

@@ -55,7 +55,7 @@ draw_pile.shuffle()
 for player in players:
     for it in range(0, NUM_CARDS_PER_PLAYER):
         new_card = draw_pile.draw()
-        player.draw_card(new_card)
+        player.draw(new_card)
 
 # init drop pile = put start card from draw pile
 start_card = draw_pile.draw()
@@ -82,12 +82,11 @@ while not game_is_over:
 
     # visualize Hans hand
     if current_player.get_name() == "Hans":
-        print(current_player.get_hand())
-
+        current_player.print_hand()
 
     for hand_card in current_player.get_hand():
         if hand_card.get_color() == current_card.get_color() or hand_card.get_value() == current_card.get_value():
-            current_player.play_card(hand_card)
+            current_player.play(hand_card)
             drop_pile.drop(hand_card)
             # print("Player", current_player.get_name(), "plays card", hand_card.get_name())
             player_has_matching_card = True
@@ -106,7 +105,7 @@ while not game_is_over:
     # if no matching card => draw new card
     if not player_has_matching_card:
         new_card = draw_pile.draw()
-        current_player.draw_card(new_card)
+        current_player.draw(new_card)
         # print("Player", current_player.get_name(), "draws card")
 
         # if draw pile is empty
