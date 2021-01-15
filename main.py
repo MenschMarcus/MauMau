@@ -2,8 +2,15 @@
 # LIBS
 ################################################################################
 
-import random
 import sys
+
+################################################################################
+# CLASSES
+################################################################################
+
+from Pile import *
+from Card import *
+from Player import *
 
 
 ################################################################################
@@ -20,75 +27,6 @@ CARDS = [ # 7, 8, 9, 1(0), U(nter), O(ber), A(ss)
 PLAYERS = ["Hans", "Lena", "Paul", "Anna"]
 
 NUM_CARDS_PER_PLAYER = 6
-
-
-################################################################################
-# CLASSES
-################################################################################
-
-class Pile:
-
-    def __init__(self):
-        self.cards = []
-
-    def drop(self, card):
-        self.cards.append(card)
-
-    def draw(self):
-        return self.cards.pop()
-
-    def show_upper_card(self):
-        return self.cards[-1]
-
-    def shuffle(self):
-        random.shuffle(self.cards)
-
-    def get_size(self):
-        return len(self.cards)
-
-################################################################################
-
-class Card:
-
-    def __init__(self, name):
-        self.color = name[0]
-        self.value = name[1]
-
-    def get_color(self):
-        return self.color
-
-    def get_value(self):
-        return self.value
-
-    def get_name(self):
-        return self.color+self.value
-
-
-################################################################################
-
-class Player:
-
-    def __init__(self, name=""):
-        self.name = name
-        self.hand = []
-
-    def play_card(self, card):
-        self.hand.remove(card)
-
-    def draw_card(self, card):
-        self.hand.append(card)
-
-    def skip(self):
-        pass
-
-    def get_name(self):
-        return self.name
-
-    def get_num_cards(self):
-        return len(self.hand)
-
-    def get_hand(self):
-        return self.hand
 
 
 ################################################################################
@@ -141,17 +79,24 @@ while not game_is_over:
 
     # player: check for each card if it matches the start card
     player_has_matching_card = False
+
+    # visualize Hans hand
+    if current_player.get_name() == "Hans":
+        print(current_player.get_hand())
+
+
     for hand_card in current_player.get_hand():
         if hand_card.get_color() == current_card.get_color() or hand_card.get_value() == current_card.get_value():
             current_player.play_card(hand_card)
             drop_pile.drop(hand_card)
-            print("Player", current_player.get_name(), "plays card", hand_card.get_name())
+            # print("Player", current_player.get_name(), "plays card", hand_card.get_name())
             player_has_matching_card = True
 
+            # 1 card left => MAU
             if current_player.get_num_cards() == 1:
                 print("Player", current_player.get_name(), "MAU!")
 
-            # test: is player winning the game?
+            # 0 cards left => MAU MAU => winner!
             elif current_player.get_num_cards() == 0:
                 game_is_over = True
                 print("Player", current_player.get_name(), "MAU MAU! and has won the game")
@@ -162,7 +107,7 @@ while not game_is_over:
     if not player_has_matching_card:
         new_card = draw_pile.draw()
         current_player.draw_card(new_card)
-        print("Player", current_player.get_name(), "draws card")
+        # print("Player", current_player.get_name(), "draws card")
 
         # if draw pile is empty
         if draw_pile.get_size() == 0:
@@ -171,7 +116,7 @@ while not game_is_over:
             draw_pile = drop_pile
             drop_pile = Pile()
             drop_pile.drop(last_card)
-            print("draw pile empty -> re-shuffle!")
+            # print("draw pile empty -> re-shuffle!")
 
     turn_it += 1
 
